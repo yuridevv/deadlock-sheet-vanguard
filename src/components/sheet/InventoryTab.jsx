@@ -30,12 +30,25 @@ const InventoryTab = ({
             setInventario(newInv);
           }} className="flex-1 bg-transparent outline-none text-sm font-bold smooth-input" placeholder="Item" />
           <div className="flex items-center gap-2 px-3 border-l border-zinc-800/20">
-             <Sword size={12} className="opacity-30" />
-             <input value={item.dano || ''} onChange={(e) => {
-               const newInv = [...inventario];
-               newInv[i] = { ...newInv[i], dano: e.target.value };
-               setInventario(newInv);
-             }} className="w-16 bg-transparent outline-none text-xs font-mono text-zinc-500 focus:text-zinc-300 placeholder:opacity-20 smooth-input" placeholder="Dano" />
+            <button onClick={() => {
+              const newInv = [...inventario];
+              newInv[i] = { ...newInv[i], isWeapon: !newInv[i].isWeapon };
+              setInventario(newInv);
+            }}>
+              <Sword size={12} className={item.isWeapon ? 'text-amber-400' : 'opacity-30'} />
+            </button>
+            {item.isWeapon && (
+              <input 
+                value={item.dano || ''} 
+                onChange={(e) => {
+                  const newInv = [...inventario];
+                  newInv[i] = { ...newInv[i], dano: e.target.value };
+                  setInventario(newInv);
+                }} 
+                className="w-16 bg-transparent outline-none text-xs font-mono text-zinc-500 focus:text-zinc-300 placeholder:opacity-20 smooth-input" 
+                placeholder="Dano" 
+              />
+            )}
           </div>
           <input type="number" value={item.qtd} onChange={(e) => {
             const newInv = [...inventario];
@@ -45,7 +58,7 @@ const InventoryTab = ({
           <button onClick={() => setInventario(inventario.filter((_, idx) => idx !== i))} className="opacity-0 group-hover:opacity-100 text-red-900 transition-all duration-300 transform hover:scale-110"><Trash2 size={16}/></button>
         </div>
       ))}
-      <button onClick={() => setInventario([...inventario, {item: '', qtd: 1, dano: ''}])} className="w-full py-6 border border-dashed border-zinc-800/20 text-[10px] font-mono opacity-20 hover:opacity-100 uppercase hover:border-zinc-500 transition-all duration-300">+ Adicionar Item</button>
+      <button onClick={() => setInventario([...inventario, {item: '', qtd: 1, dano: '', isWeapon: false}])} className="w-full py-6 border border-dashed border-zinc-800/20 text-[10px] font-mono opacity-20 hover:opacity-100 uppercase hover:border-zinc-500 transition-all duration-300">+ Adicionar Item</button>
     </div>
   );
 };

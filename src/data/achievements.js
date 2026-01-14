@@ -17,7 +17,7 @@ export const achievementsList = [
     { name: "Final guy", description: "Sobreviva a DFD.", icon: "🎖️", trigger: "manual" },
     { name: "Abençoado", description: "Sobreviva o DEADLOCK sem tomar dano.", icon: "🎖️", trigger: "manual" },
     { name: "Escolha errada", description: "Faça uma escolha brutalmente errada.", icon: "🥀", trigger: "manual" },
-    { name: "À moda fagundes", description: "Mate um hollow.", icon: "🎖️", trigger: "manual" },
+    { name: "À moda Fagundes", description: "Mate um hollow.", icon: "🎖️", trigger: "manual" },
     { name: "The walking dead", description: "Sobreviva ao estado morrendo.", icon: "🎖️", trigger: "manual" }
 ];
 
