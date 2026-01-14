@@ -133,7 +133,7 @@ const Notepad = ({ isNotepadOpen, setIsNotepadOpen, notes, setNotes, sanidade, d
           variants={variants} initial="initial" animate="animate" exit="exit"
           className={`fixed z-50 border flex flex-col overflow-hidden rounded-none shadow-2xl ${
             darkMode ? 'bg-[#0a0a0a] border-zinc-800 text-zinc-200' : 'bg-[#f4f1ea] border-zinc-300 text-zinc-800'
-          } ${mode === 'evidence' ? 'inset-4 md:inset-8' : 'bottom-24 right-6 w-[400px] h-[600px]'}`}
+          } ${mode === 'evidence' ? 'inset-2 md:inset-8' : 'bottom-4 right-4 w-[92vw] sm:w-[400px] h-[70vh] sm:h-[600px] max-h-[85vh]'}`}
         >
           {/* Header (Fixo) */}
           <div className={`flex-none flex items-center justify-between px-4 py-3 border-b ${darkMode ? 'border-zinc-800 bg-zinc-900/90' : 'border-zinc-300 bg-zinc-100/90'}`}>

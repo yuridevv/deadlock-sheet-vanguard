@@ -39,7 +39,8 @@ const useGlitchText = (originalText, sanidade) => {
 
 const NoteCard = ({ 
     note, scale, setNotes, connectingFrom, setConnectingFrom, 
-    handleConnect, setIsPanningDisabled, sanidade
+    handleConnect, setIsPanningDisabled, sanidade,
+    setDragOffsets
 }) => {
     const isConnecting = connectingFrom === note.id;
     const isTarget = connectingFrom && connectingFrom !== note.id;
@@ -59,17 +60,23 @@ const NoteCard = ({
     return (
         <motion.div
             id={`note-${note.id}`}
-            // VOLTANDO PARA O MOVIMENTO ORIGINAL (DRAG NATIVO)
             drag={!isEditing}
             dragMomentum={false}
             dragElastic={0}
             onDragStart={() => setIsPanningDisabled(true)}
+            onDrag={(e, info) => {
+                setDragOffsets(prev => ({ ...prev, [note.id]: info.offset }));
+            }}
             onDragEnd={(event, info) => {
                 setIsPanningDisabled(false);
-                // Atualiza a posição real no estado global
                 const newX = note.x + info.offset.x / scale;
                 const newY = note.y + info.offset.y / scale;
                 setNotes(prev => prev.map(n => n.id === note.id ? { ...n, x: newX, y: newY } : n));
+                setDragOffsets(prev => {
+                    const next = { ...prev };
+                    delete next[note.id];
+                    return next;
+                });
             }}
             initial={false}
             animate={{ 
@@ -126,21 +133,45 @@ const NoteCard = ({
     );
 };
 
-const ConnectionLines = ({ notes, handleDisconnect }) => (
+const ConnectionLines = ({ notes, handleDisconnect, dragOffsets, scale }) => (
     <svg className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-visible z-10">
         {notes.map(note => (note.connections || []).map(targetId => {
             const target = notes.find(n => n.id === targetId);
             if (!target) return null;
-            const sX = note.x + 128; const sY = note.y + 16;
-            const eX = target.x + 128; const eY = target.y + 16;
+
+            // Calculate positions including the temporary drag offset
+            const startOffset = dragOffsets[note.id] || { x: 0, y: 0 };
+            const endOffset = dragOffsets[targetId] || { x: 0, y: 0 };
+
+            const sX = (note.x + startOffset.x / scale) + 128; 
+            const sY = (note.y + startOffset.y / scale) + 16;
+            const eX = (target.x + endOffset.x / scale) + 128; 
+            const eY = (target.y + endOffset.y / scale) + 16;
+            
             const mX = (sX + eX) / 2; const mY = (sY + eY) / 2;
+            
             return (
                 <g key={`${note.id}-${targetId}`} className="group pointer-events-auto">
-                    <line x1={sX} y1={sY} x2={eX} y2={eY} stroke="#52525b" strokeWidth="2" className="transition-all group-hover:stroke-red-500 opacity-60 group-hover:opacity-100" strokeDasharray="5,5" />
+                    <motion.line 
+                        x1={sX} y1={sY} x2={eX} y2={eY} 
+                        stroke="#52525b" 
+                        strokeWidth="2" 
+                        strokeDasharray="5,5"
+                        initial={{ pathLength: 0, opacity: 0 }}
+                        animate={{ pathLength: 1, opacity: 0.6 }}
+                        transition={{ duration: 0.4, ease: "circOut" }}
+                        className="transition-all group-hover:stroke-red-500 group-hover:opacity-100" 
+                    />
                     <foreignObject x={mX - 10} y={mY - 10} width="20" height="20">
-                        <div onClick={(e) => { e.stopPropagation(); handleDisconnect(note.id, targetId); }} className="w-5 h-5 bg-zinc-900 border border-zinc-600 rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-900 hover:border-red-500">
+                        <motion.div 
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.2 }}
+                            onClick={(e) => { e.stopPropagation(); handleDisconnect(note.id, targetId); }} 
+                            className="w-5 h-5 bg-zinc-900 border border-zinc-600 rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-900 hover:border-red-500"
+                        >
                             <Unlink size={10} className="text-zinc-400 hover:text-white" />
-                        </div>
+                        </motion.div>
                     </foreignObject>
                 </g>
             );
@@ -151,6 +182,7 @@ const ConnectionLines = ({ notes, handleDisconnect }) => (
 const EvidenceBoard = ({ notes, setNotes, sanidade }) => {
     const [connectingFrom, setConnectingFrom] = useState(null);
     const [isPanningDisabled, setIsPanningDisabled] = useState(false);
+    const [dragOffsets, setDragOffsets] = useState({});
 
     const handleConnect = (targetId) => {
         if (connectingFrom && connectingFrom !== targetId) {
@@ -188,9 +220,25 @@ const EvidenceBoard = ({ notes, setNotes, sanidade }) => {
                                     <rect width="100%" height="100%" fill="url(#board-grid)" />
                                 </svg>
 
-                                <ConnectionLines notes={notes} handleDisconnect={(s, t) => setNotes(prev => prev.map(n => n.id === s ? { ...n, connections: n.connections.filter(id => id !== t) } : n))} />
+                                <ConnectionLines 
+                                    notes={notes} 
+                                    handleDisconnect={(s, t) => setNotes(prev => prev.map(n => n.id === s ? { ...n, connections: n.connections.filter(id => id !== t) } : n))} 
+                                    dragOffsets={dragOffsets}
+                                    scale={state?.scale || 1}
+                                />
                                 {notes.map(note => (
-                                    <NoteCard key={note.id} note={note} scale={state?.scale || 1} setNotes={setNotes} connectingFrom={connectingFrom} setConnectingFrom={setConnectingFrom} handleConnect={handleConnect} setIsPanningDisabled={setIsPanningDisabled} sanidade={sanidade} />
+                                    <NoteCard 
+                                        key={note.id} 
+                                        note={note} 
+                                        scale={state?.scale || 1} 
+                                        setNotes={setNotes} 
+                                        connectingFrom={connectingFrom} 
+                                        setConnectingFrom={setConnectingFrom} 
+                                        handleConnect={handleConnect} 
+                                        setIsPanningDisabled={setIsPanningDisabled} 
+                                        sanidade={sanidade}
+                                        setDragOffsets={setDragOffsets}
+                                    />
                                 ))}
                             </div>
                         </TransformComponent>
