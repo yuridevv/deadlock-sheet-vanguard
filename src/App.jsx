@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Shield, Dice5, Sun, Moon, HeartPulse, ScrollText, Skull, 
   Trash2, Crosshair, Download, Upload, Plus, Minus,
-  Brain, Users, Eye, Camera, Star, Wind, ImageIcon, Sword, Zap, ZapOff
+  Brain, Users, Eye, Camera, Star, Wind, ImageIcon, Sword, Zap, ZapOff,
+  GripVertical
 } from 'lucide-react';
 
 // --- Componente de Partículas ---
@@ -134,6 +135,7 @@ export default function VanguardDossierV7() {
   const [rollDetails, setRollDetails] = useState({ source: 'D12', mod: 0 });
   const [isDead, setIsDead] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const [draggedItemIndex, setDraggedItemIndex] = useState(null);
 
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
@@ -228,6 +230,28 @@ export default function VanguardDossierV7() {
       } catch (err) { alert("Erro no JSON."); }
     };
     reader.readAsText(file);
+  };
+
+  const handleDragStart = (index) => {
+    setDraggedItemIndex(index);
+  };
+
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    if (draggedItemIndex === null || draggedItemIndex === index) return;
+
+    const newInventario = [...inventario];
+    const itemSendoArrastado = newInventario[draggedItemIndex];
+    
+    newInventario.splice(draggedItemIndex, 1);
+    newInventario.splice(index, 0, itemSendoArrastado);
+
+    setDraggedItemIndex(index);
+    setInventario(newInventario);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedItemIndex(null);
   };
 
   return (
@@ -347,7 +371,7 @@ export default function VanguardDossierV7() {
             </div>
             <div>
               <h2 className="text-[10px] font-black tracking-[0.5em] opacity-30 uppercase font-mono transition-opacity group-hover:opacity-50">DEADLOCK SHEET</h2>
-              <p className="text-[9px] font-bold opacity-20 uppercase font-mono">Archive 0.7.8 // VANGUARD</p>
+              <p className="text-[9px] font-bold opacity-20 uppercase font-mono">Version 0.7.8 // VANGUARD</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -425,22 +449,35 @@ export default function VanguardDossierV7() {
                   
                   <div className="space-y-4">
                     <div className="flex justify-between items-center opacity-30">
-                      <h3 className="text-[10px] font-black uppercase tracking-widest font-mono">Habilidades e Maestrias</h3>
+                      <h3 className="text-[10px] font-black uppercase tracking-widest font-mono">Habilidades/Maestrias</h3>
                       <button onClick={() => setHabilidades([...habilidades, {id: Date.now(), nome: '', rank: ''}])} className="hover:text-white transition-colors"><Plus size={16}/></button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {habilidades.map((h, i) => (
-                        <div key={h.id} className="flex items-center gap-4 p-4 border border-zinc-800/10 bg-white/[0.01] hover:border-zinc-700 transition-all duration-300 group">
-                          <input value={h.nome} onChange={(e) => {
-                            const newH = [...habilidades];
-                            newH[i] = { ...newH[i], nome: e.target.value };
-                            setHabilidades(newH);
-                          }} className="flex-1 bg-transparent text-xs font-bold outline-none smooth-input" placeholder="Habilidade..." />
-                          <input value={h.rank} onChange={(e) => {
-                            const newH = [...habilidades];
-                            newH[i] = { ...newH[i], rank: e.target.value };
-                            setHabilidades(newH);
-                          }} className="w-8 bg-transparent text-right text-xs opacity-40 outline-none smooth-input" />
+                        <div key={h.id} className="flex items-center gap-4 p-4 border border-zinc-800/30 bg-white/[0.02] hover:border-zinc-500 transition-all duration-300 group">
+                          <input 
+                            value={h.nome} 
+                            onChange={(e) => {
+                              const newH = [...habilidades];
+                              newH[i] = { ...newH[i], nome: e.target.value };
+                              setHabilidades(newH);
+                            }} 
+                            className="flex-1 bg-transparent text-xs font-bold outline-none border-b border-zinc-800/50 focus:border-zinc-400 py-1 transition-colors placeholder:text-zinc-600" 
+                            placeholder="Nome da Habilidade" 
+                          />
+                          <div className="relative">
+                            <input 
+                              value={h.rank} 
+                              onChange={(e) => {
+                                const newH = [...habilidades];
+                                newH[i] = { ...newH[i], rank: e.target.value };
+                                setHabilidades(newH);
+                              }} 
+                              className="w-10 bg-zinc-900/50 border border-zinc-800 focus:border-zinc-500 text-center text-xs font-mono font-bold py-1 outline-none transition-all rounded-sm placeholder:opacity-30" 
+                              placeholder="0"
+                            />
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[7px] font-mono opacity-20 uppercase tracking-tighter">Maestria</div>
+                          </div>
                           <button onClick={() => setHabilidades(habilidades.filter(hab => hab.id !== h.id))} className="opacity-0 group-hover:opacity-100 text-red-900 transition-opacity duration-300"><Trash2 size={14}/></button>
                         </div>
                       ))}
@@ -471,7 +508,17 @@ export default function VanguardDossierV7() {
               {activeTab === 'inventario' && (
                 <div className="space-y-4 animate-[fadeIn_0.3s_ease-out]">
                   {inventario.map((item, i) => (
-                    <div key={i} className="flex items-center gap-4 p-4 border border-zinc-800/10 group bg-white/[0.01] hover:border-zinc-700 transition-all duration-300">
+                    <div 
+                      key={i} 
+                      draggable 
+                      onDragStart={() => handleDragStart(i)}
+                      onDragOver={(e) => handleDragOver(e, i)}
+                      onDragEnd={handleDragEnd}
+                      className={`flex items-center gap-4 p-4 border border-zinc-800/10 group bg-white/[0.01] hover:border-zinc-700 transition-all duration-300 ${draggedItemIndex === i ? 'opacity-30 border-dashed border-zinc-500' : ''}`}
+                    >
+                      <div className="cursor-grab active:cursor-grabbing text-zinc-700 hover:text-zinc-400 p-1">
+                        <GripVertical size={16} />
+                      </div>
                       <span className="text-[10px] opacity-10 font-mono transition-opacity group-hover:opacity-30">{i+1}</span>
                       <input value={item.item} onChange={(e) => {
                         const newInv = [...inventario];
@@ -586,12 +633,12 @@ export default function VanguardDossierV7() {
 
             <div className="grid grid-cols-2 gap-px bg-zinc-800/20 border border-zinc-800/20 overflow-hidden">
                <div className="p-6 text-center hover:bg-white/[0.02] transition-colors duration-300">
-                  <Shield size={16} className="mx-auto mb-2 opacity-10"/>
+                  <Shield size={16} className="mx-auto mb-2 opacity-10" />
                   <p className="text-[9px] font-mono opacity-30 uppercase">Defesa</p>
                   <p className="text-4xl font-serif"><AnimatedNumber value={defesaBase} /></p>
                </div>
                <div className="p-6 text-center hover:bg-white/[0.02] transition-colors duration-300">
-                  <Crosshair size={16} className="mx-auto mb-2 opacity-10"/>
+                  <Crosshair size={16} className="mx-auto mb-2 opacity-10" />
                   <p className="text-[9px] font-mono opacity-30 uppercase">Reflexo</p>
                   <p className="text-4xl font-serif"><AnimatedNumber value={reflexoBase} /></p>
                </div>
