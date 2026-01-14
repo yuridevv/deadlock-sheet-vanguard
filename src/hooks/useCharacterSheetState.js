@@ -55,15 +55,41 @@ export const useCharacterSheetState = () => {
   const [showContent, setShowContent] = useState(false);
   const [notification, setNotification] = useState(null); // For achievement notifications
   const [draggedItemIndex, setDraggedItemIndex] = useState(null);
+  
+  const [notes, setNotes] = useState(() => {
+    const rawNotes = initial.notes || [];
+    // Migrate old notes to object format and ensure positions
+    return rawNotes.map((note, index) => {
+      if (typeof note === 'string') {
+        return {
+          id: `${Date.now()}-${index}-${Math.random().toString(36).substr(2, 5)}`,
+          content: note,
+          x: 100 + (index * 50) % 500,
+          y: 100 + (index * 50) % 400,
+          connections: []
+        };
+      }
+      // Ensure existing object notes have positions
+      return {
+        ...note,
+        id: note.id || `${Date.now()}-${index}`,
+        x: typeof note.x === 'number' ? note.x : (100 + (index * 50) % 500),
+        y: typeof note.y === 'number' ? note.y : (100 + (index * 50) % 400),
+        connections: note.connections || []
+      };
+    });
+  });
+
+  const [isNotepadOpen, setIsNotepadOpen] = useState(false);
 
   useEffect(() => {
     const dataToSave = {
       nome, persona, background, nivel, idade, arquetipo, bio, aparencia, lacos,
       imagem, vigor, vigorMax, folego, sanidade, fadiga, attrs, inventario, habilidades,
-      achievements, darkMode, effectsEnabled
+      achievements, darkMode, effectsEnabled, notes
     };
     localStorage.setItem('vanguard_sheet_data_v8', JSON.stringify(dataToSave));
-  }, [nome, persona, background, nivel, idade, arquetipo, bio, aparencia, lacos, imagem, vigor, vigorMax, folego, sanidade, fadiga, attrs, inventario, habilidades, achievements, darkMode, effectsEnabled]);
+  }, [nome, persona, background, nivel, idade, arquetipo, bio, aparencia, lacos, imagem, vigor, vigorMax, folego, sanidade, fadiga, attrs, inventario, habilidades, achievements, darkMode, effectsEnabled, notes]);
 
   useEffect(() => { 
     setTimeout(() => setShowContent(true), 100); 
@@ -73,7 +99,7 @@ export const useCharacterSheetState = () => {
     nome, persona, background, nivel, idade, arquetipo, bio, aparencia, lacos,
     imagem, vigor, vigorMax, folego, sanidade, fadiga, attrs, inventario, habilidades,
     achievements, activeTab, darkMode, effectsEnabled, resultado, rollDetails, isDead, showContent,
-    notification, draggedItemIndex,
+    notification, draggedItemIndex, notes, isNotepadOpen,
   };
 
   const setters = {
@@ -81,7 +107,7 @@ export const useCharacterSheetState = () => {
     setAparencia, setLacos, setImagem, setVigor, setVigorMax, setFolego, setSanidade,
     setFadiga, setAttrs, setInventario, setHabilidades, setAchievements, setActiveTab, setDarkMode,
     setEffectsEnabled, setResultado, setRollDetails, setIsDead, setShowContent,
-    setNotification, setDraggedItemIndex,
+    setNotification, setDraggedItemIndex, setNotes, setIsNotepadOpen,
   };
 
   return { ...state, ...setters };

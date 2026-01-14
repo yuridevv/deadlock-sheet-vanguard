@@ -1,5 +1,5 @@
-import React from 'react';
-import { GripVertical, Sword, Trash2 } from '../icons';
+import React, { useState } from 'react';
+import { GripVertical, Sword, Trash2 } from 'lucide-react'; // Changed to lucide-react standard icons just in case local ones are limited
 
 const InventoryTab = ({
   inventario,
@@ -9,6 +9,21 @@ const InventoryTab = ({
   handleDragOver,
   handleDragEnd
 }) => {
+  // Estado local para animação temporária de ativação
+  const [activatingIndex, setActivatingIndex] = useState(null);
+
+  const toggleWeapon = (i) => {
+    const newInv = [...inventario];
+    const isNowWeapon = !newInv[i].isWeapon;
+    newInv[i] = { ...newInv[i], isWeapon: isNowWeapon };
+    setInventario(newInv);
+
+    if (isNowWeapon) {
+        setActivatingIndex(i);
+        setTimeout(() => setActivatingIndex(null), 500);
+    }
+  };
+
   return (
     <div className="space-y-4 animate-[fadeIn_0.3s_ease-out]">
       {inventario.map((item, i) => (
@@ -18,36 +33,60 @@ const InventoryTab = ({
           onDragStart={() => handleDragStart(i)}
           onDragOver={(e) => handleDragOver(e, i)}
           onDragEnd={handleDragEnd}
-          className={`flex items-center gap-4 p-4 border border-zinc-800/10 group bg-white/[0.01] hover:border-zinc-700 transition-all duration-300 ${draggedItemIndex === i ? 'opacity-30 border-dashed border-zinc-500' : ''}`}
+          className={`relative flex items-center gap-4 p-4 border transition-all duration-300 group
+             ${draggedItemIndex === i ? 'opacity-30 border-dashed border-zinc-500' : ''}
+             ${item.isWeapon ? 'bg-red-900/5 border-red-900/20 hover:border-red-900/40' : 'bg-white/[0.01] border-zinc-800/10 hover:border-zinc-700'}
+             ${activatingIndex === i ? 'ring-1 ring-red-500 bg-red-900/20' : ''}
+          `}
         >
+          {/* Indicador de Arma Lateral (Visual Tech) */}
+          {item.isWeapon && (
+             <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-red-900 shadow-[0_0_8px_rgba(220,38,38,0.5)] animate-pulse" />
+          )}
+
           <div className="cursor-grab active:cursor-grabbing text-zinc-700 hover:text-zinc-400 p-1">
             <GripVertical size={16} />
           </div>
           <span className="text-[10px] opacity-10 font-mono transition-opacity group-hover:opacity-30">{i+1}</span>
-          <input value={item.item} onChange={(e) => {
-            const newInv = [...inventario];
-            newInv[i] = { ...newInv[i], item: e.target.value };
-            setInventario(newInv);
-          }} className="flex-1 bg-transparent outline-none text-sm font-bold smooth-input" placeholder="Item" />
+          
+          <input 
+            value={item.item} 
+            onChange={(e) => {
+                const newInv = [...inventario];
+                newInv[i] = { ...newInv[i], item: e.target.value };
+                setInventario(newInv);
+            }} 
+            className={`flex-1 bg-transparent outline-none text-sm font-bold smooth-input transition-colors
+                ${item.isWeapon ? 'text-red-900 placeholder-red-900/30' : 'text-zinc-300 placeholder-zinc-700'}
+            `}
+            placeholder="Item" 
+          />
+
           <div className="flex items-center gap-2 px-3 border-l border-zinc-800/20">
-            <button onClick={() => {
-              const newInv = [...inventario];
-              newInv[i] = { ...newInv[i], isWeapon: !newInv[i].isWeapon };
-              setInventario(newInv);
-            }}>
-              <Sword size={12} className={item.isWeapon ? 'text-amber-400' : 'opacity-30'} />
+            <button 
+                onClick={() => toggleWeapon(i)}
+                className={`transition-all duration-300 transform active:scale-90 rounded p-1
+                    ${item.isWeapon ? 'bg-red-900/20 text-red-500' : 'opacity-30 hover:opacity-100 hover:text-zinc-300'}
+                    ${activatingIndex === i ? 'scale-125 text-red-400' : ''}
+                `}
+                title="Marcar como Arma"
+            >
+              <Sword size={14} className={item.isWeapon ? 'drop-shadow-[0_0_5px_rgba(239,68,68,0.6)]' : ''} />
             </button>
+            
             {item.isWeapon && (
-              <input 
-                value={item.dano || ''} 
-                onChange={(e) => {
-                  const newInv = [...inventario];
-                  newInv[i] = { ...newInv[i], dano: e.target.value };
-                  setInventario(newInv);
-                }} 
-                className="w-16 bg-transparent outline-none text-xs font-mono text-zinc-500 focus:text-zinc-300 placeholder:opacity-20 smooth-input" 
-                placeholder="Dano" 
-              />
+              <div className="relative animate-[fadeIn_0.3s_ease-out]">
+                  <input 
+                    value={item.dano || ''} 
+                    onChange={(e) => {
+                    const newInv = [...inventario];
+                    newInv[i] = { ...newInv[i], dano: e.target.value };
+                    setInventario(newInv);
+                    }} 
+                    className="w-20 bg-transparent outline-none text-xs font-mono text-red-400 focus:text-red-300 placeholder:text-red-900/50 smooth-input text-right" 
+                    placeholder="DANO" 
+                />
+              </div>
             )}
           </div>
           <input type="number" value={item.qtd} onChange={(e) => {
