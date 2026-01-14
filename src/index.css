@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;700;900&family=JetBrains+Mono&display=swap');
+
 :root {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   color-scheme: dark;
@@ -58,3 +60,73 @@ body {
 .status-transition {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.font-serif { font-family: 'Playfair Display', serif; }
+.font-inter { font-family: 'Inter', sans-serif; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
+
+.crt-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+  background-size: 100% 3px, 3px 100%; z-index: 100; pointer-events: none; opacity: 0.6;
+}
+
+@keyframes scanline-roll { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+.scanline-moving {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.02), transparent);
+  z-index: 102; pointer-events: none; animation: scanline-roll 10s linear infinite;
+}
+
+@keyframes death-fade-in {
+  0% { opacity: 0; backdrop-filter: blur(0px); transform: scale(1.02); }
+  100% { opacity: 1; backdrop-filter: blur(8px); transform: scale(1); }
+}
+@keyframes skull-enter-smooth {
+  0% { opacity: 0; transform: scale(0.8) translateY(20px); filter: brightness(0) blur(10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1.2) drop-shadow(0 0 30px #ff0000) blur(0); }
+}
+@keyframes text-enter-slide {
+   0% { opacity: 0; transform: translateY(10px); }
+   100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-death-screen { animation: death-fade-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-skull-smooth { animation: skull-enter-smooth 1s cubic-bezier(0.22, 1, 0.36, 1) forwards; animation-delay: 0.2s; opacity: 0; }
+.animate-text-enter { animation: text-enter-slide 0.8s ease-out forwards; animation-delay: 0.5s; opacity: 0; }
+
+.siren-active { animation: sirenRed 2s infinite ease-in-out; }
+@keyframes sirenRed {
+  0%, 100% { box-shadow: inset 0 0 0px rgba(220, 0, 0, 0); }
+  50% { box-shadow: inset 0 0 150px rgba(180, 0, 0, 0.25); }
+}
+
+@keyframes alarm-pulse-overlay {
+    0%, 100% { background-color: rgba(60, 0, 0, 0); }
+    50% { background-color: rgba(120, 0, 0, 0.12); }
+}
+.alarm-overlay-active {
+    animation: alarm-pulse-overlay 2s infinite ease-in-out;
+    pointer-events: none; position: fixed; inset: 0; z-index: 99;
+}
+
+@keyframes flicker-animation {
+    0% { opacity: 1; filter: brightness(1); }
+    2% { opacity: 0.9; filter: brightness(0.9); }
+    4% { opacity: 1; filter: brightness(1); }
+    5% { opacity: 0.3; filter: brightness(0.4); }
+    6% { opacity: 1; filter: brightness(1); }
+    12% { opacity: 1; filter: brightness(1); }
+    13% { opacity: 0.1; filter: brightness(0.2); }
+    14% { opacity: 1; filter: brightness(1); }
+    100% { opacity: 1; filter: brightness(1); }
+}
+.animate-flicker-screen { animation: flicker-animation 8s infinite; }
+
+.smooth-input { transition: color 0.2s, border-color 0.2s, background-color 0.2s, transform 0.1s; }
+.smooth-input:focus { transform: translateY(-1px); }
