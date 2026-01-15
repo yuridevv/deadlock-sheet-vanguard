@@ -60,7 +60,7 @@ const StatusBar = ({
           <button onClick={() => onAdjust(1)} className={`p-1 border border-zinc-800 opacity-40 hover:opacity-100 ${hoverBorderColor} transition-all duration-300`}><Plus size={12}/></button>
         </div>
       </div>
-      <div className="h-1 bg-zinc-900 w-full overflow-hidden rounded-full">
+      <div className="h-1 bg-zinc-900 w-full overflow-hidden">
         <div className={barClasses} style={{width: `${percentage}%`}}></div>
       </div>
     </div>

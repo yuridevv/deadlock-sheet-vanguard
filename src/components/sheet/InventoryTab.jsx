@@ -65,7 +65,7 @@ const InventoryTab = ({
           <div className="flex items-center gap-2 px-3 border-l border-zinc-800/20">
             <button 
                 onClick={() => toggleWeapon(i)}
-                className={`transition-all duration-300 transform active:scale-90 rounded p-1
+                className={`transition-all duration-300 transform active:scale-90 rounded-none p-1
                     ${item.isWeapon ? 'bg-red-900/20 text-red-500' : 'opacity-30 hover:opacity-100 hover:text-zinc-300'}
                     ${activatingIndex === i ? 'scale-125 text-red-400' : ''}
                 `}

@@ -18,7 +18,7 @@ const AchievementNotification = ({ achievementName, achievementData }) => {
   }
 
   return (
-    <div className="fixed bottom-8 right-8 z-[2000] flex items-center gap-4 p-4 rounded-lg shadow-2xl bg-zinc-900 border border-amber-400/50 animate-[slide-in_0.5s_cubic-bezier(0.25,1,0.5,1)_forwards,slide-out_0.5s_cubic-bezier(0.5,0,0.75,0)_4s_forwards]">
+    <div className="fixed bottom-8 right-8 z-[2000] flex items-center gap-4 p-4 rounded-none shadow-2xl bg-zinc-900 border border-amber-400/50 animate-[slide-in_0.5s_cubic-bezier(0.25,1,0.5,1)_forwards,slide-out_0.5s_cubic-bezier(0.5,0,0.75,0)_4s_forwards]">
       <style>{`
         @keyframes slide-in {
           from { transform: translateX(120%); opacity: 0; }

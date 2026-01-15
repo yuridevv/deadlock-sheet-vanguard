@@ -15,13 +15,13 @@ const AchievementsTab = ({ achievements, setAchievements }) => {
           <div 
             key={name} 
             onClick={() => toggleAchievement(name)}
-            className={`p-6 flex flex-col items-center justify-center text-center border rounded-md transition-all duration-300 cursor-pointer group relative
+            className={`p-6 flex flex-col items-center justify-center text-center border rounded-none transition-all duration-300 cursor-pointer group relative
             ${ach.unlocked 
               ? 'border-amber-400/30 bg-amber-950/10 shadow-lg shadow-amber-950/20 hover:border-amber-400/60 hover:bg-amber-950/30' 
               : 'border-zinc-800 bg-zinc-900/40 grayscale hover:grayscale-0 hover:bg-zinc-800/80 hover:border-zinc-700'
             }`}
           >
-            <div className={`absolute -top-4 bg-zinc-800 border ${ach.unlocked ? 'border-amber-500/50' : 'border-zinc-700'} px-2 py-0.5 rounded-full text-xs font-bold ${ach.unlocked ? 'text-amber-400' : 'text-zinc-400'} transition-all`}>
+            <div className={`absolute -top-4 bg-zinc-800 border ${ach.unlocked ? 'border-amber-500/50' : 'border-zinc-700'} px-2 py-0.5 rounded-none text-xs font-bold ${ach.unlocked ? 'text-amber-400' : 'text-zinc-400'} transition-all`}>
               {ach.unlocked ? 'DESBLOQUEADA' : 'BLOQUEADA'}
             </div>
             

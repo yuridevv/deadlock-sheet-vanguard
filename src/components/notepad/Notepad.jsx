@@ -17,8 +17,17 @@ const renderHighlightedText = (text) => {
 };
 
 const CREEPY_PHRASES = [
-    "THEY ARE WATCHING", "DON'T LOOK BEHIND", "NULL POINTER", "IT'S IN THE WALLS",
-    "WAKE UP", "0xDEADBEEF", "SYSTEM FAILURE", "NOT REAL", "RUN", "FATAL ERROR"
+    "HE'S HERE", 
+    "THE DEADLOCK IS REAL", 
+    "SOMEONE IS WATCHING", 
+    "IT'S IN THE WALLS",
+    "WAKE UP", 
+    "SYSTEM FAILURE", 
+    "NOT REAL", 
+    "RUN", 
+    "FATAL ERROR",
+    "BEHIND YOU",
+    "NULL REFERENCE"
 ];
 
 const useGlitchText = (originalText, sanidade) => {
@@ -27,12 +36,12 @@ const useGlitchText = (originalText, sanidade) => {
     useEffect(() => {
         if (sanidade > 0) { setDisplayText(originalText); return; }
         const interval = setInterval(() => {
-            if (Math.random() > 0.7) { 
+            if (Math.random() > 0.6) { 
                 const phrase = CREEPY_PHRASES[Math.floor(Math.random() * CREEPY_PHRASES.length)];
                 setDisplayText(phrase);
                 setTimeout(() => { setDisplayText(originalText); }, Math.random() * 800 + 200);
             }
-        }, 2000);
+        }, 3000);
         return () => clearInterval(interval);
     }, [sanidade, originalText]);
     return displayText;
@@ -56,14 +65,17 @@ const NoteListItem = ({ note, updateNoteContent, deleteNote, sanidade, darkMode 
         updateNoteContent(note.id, e.target.value);
         if (sanidade <= 0) {
             setIsTypingGlitch(true);
-            setTimeout(() => setIsTypingGlitch(false), 150);
+            setTimeout(() => setIsTypingGlitch(false), 200); // Slightly longer for the new animation
         }
     };
+
+    const isInsanityActive = sanidade <= 0 && displayText !== note.content;
 
     return (
         <motion.div 
             layoutId={note.id}
             className={`group relative border p-3 transition-all flex-shrink-0 ${
+                isInsanityActive ? 'bg-red-900/40 border-red-500 animate-pulse' :
                 darkMode ? 'bg-zinc-900/40 border-zinc-800' : 'bg-white/60 border-zinc-300'
             }`}
         >
@@ -84,13 +96,16 @@ const NoteListItem = ({ note, updateNoteContent, deleteNote, sanidade, darkMode 
                         value={note.content}
                         onChange={handleInput}
                         onBlur={() => setIsEditing(false)}
-                        className={`w-full bg-transparent outline-none resize-none text-sm font-mono leading-relaxed transition-colors block overflow-hidden ${darkMode ? 'text-zinc-300' : 'text-zinc-800'} ${isTypingGlitch ? 'text-red-600' : ''}`}
+                        className={`w-full bg-transparent outline-none resize-none text-sm font-mono leading-relaxed transition-colors block overflow-hidden 
+                            ${darkMode ? 'text-zinc-300' : 'text-zinc-800'} 
+                            ${isTypingGlitch ? 'text-red-600 glitch-text-input font-bold' : ''}`}
                         placeholder=">> INPUT"
                         spellCheck={false}
                     />
                 ) : (
                     <div 
-                        className={`w-full text-sm font-mono leading-relaxed whitespace-pre-wrap break-words ${isTypingGlitch || (sanidade <= 0 && displayText !== note.content) ? 'text-red-600 font-bold' : darkMode ? 'text-zinc-400' : 'text-zinc-700'}`}
+                        className={`w-full text-sm font-mono leading-relaxed whitespace-pre-wrap break-words 
+                            ${isTypingGlitch || (sanidade <= 0 && displayText !== note.content) ? 'text-red-600 font-bold glitch-active-critical' : darkMode ? 'text-zinc-400' : 'text-zinc-700'}`}
                         style={{ minHeight: '60px' }}
                     >
                         {renderHighlightedText(displayText) || <span className="opacity-20 italic">vazio</span>}

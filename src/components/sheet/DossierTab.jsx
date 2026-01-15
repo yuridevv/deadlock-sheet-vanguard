@@ -55,7 +55,7 @@ const DossierTab = ({
                     newH[i] = { ...newH[i], rank: e.target.value };
                     setHabilidades(newH);
                   }} 
-                  className="w-10 bg-zinc-900/50 border border-zinc-800 focus:border-zinc-500 text-center text-xs font-mono font-bold py-1 outline-none transition-all rounded-sm placeholder:opacity-30" 
+                  className="w-10 bg-zinc-900/50 border border-zinc-800 focus:border-zinc-500 text-center text-xs font-mono font-bold py-1 outline-none transition-all rounded-none placeholder:opacity-30" 
                   placeholder="0"
                 />
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[7px] font-mono opacity-20 uppercase tracking-tighter">Maestria</div>

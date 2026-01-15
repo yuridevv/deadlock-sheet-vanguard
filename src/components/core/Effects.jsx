@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 // --- Componente de Partículas ---
 const ParticleField = ({ isCritical, darkMode }) => {
@@ -69,7 +70,7 @@ const ParticleField = ({ isCritical, darkMode }) => {
 };
 
 
-const Effects = ({ effectsEnabled, isCritical, darkMode }) => {
+const Effects = ({ effectsEnabled, isCritical, darkMode, triggerVignette }) => {
     if (!effectsEnabled) return null;
 
     return (
@@ -78,6 +79,19 @@ const Effects = ({ effectsEnabled, isCritical, darkMode }) => {
             <div className="crt-overlay pointer-events-none"></div>
             <div className="scanline-moving"></div>
             <div className="bg-glow" style={{ backgroundColor: isCritical ? '#440000' : '#111111' }}></div>
+            
+            <AnimatePresence>
+                {triggerVignette && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 0.4 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="fixed inset-0 pointer-events-none z-[110] bg-[radial-gradient(circle,transparent_70%,rgba(153,27,27,0.2)_100%)] shadow-[inset_0_0_80px_rgba(153,27,27,0.3)]"
+                    />
+                )}
+            </AnimatePresence>
+
             {isCritical && (
                 <>
                     <div className="alarm-overlay-active"></div>

@@ -1,16 +1,42 @@
-# React + Vite
+# Vanguard Dossier v7.8 - Tactical Investigator Sheet
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Uma ficha de personagem imersiva e tática desenvolvida para investigadores, com foco em atmosfera, automação e feedback visual.
 
-Currently, two official plugins are available:
+## 🌟 Funcionalidades Principais
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Vinheta de Boot**: Sequência de inicialização estilizada "Vanguard OS".
+- **Monitor Cardíaco (ECG)**: Visualização dinâmica de Vigor, Sanidade e Fadiga.
+- **Sistema de Insanidade**: Efeitos de glitch e alucinações textuais no bloco de notas quando a sanidade chega a 0.
+- **Feedback de Fadiga**: Efeitos visuais de alarme e alertas de caveira em estados críticos.
+- **Notepad & Evidence Board**: Sistema de notas com marcações (#NPC, @Local, !Pista) e quadro de evidências.
+- **Conquistas**: Desbloqueio automático de conquistas baseado em rolagens de dados.
+- **Design Tático**: Interface padronizada com bordas quadradas (rounded-none) para uma estética técnica.
 
-## React Compiler
+## 🛠️ Tecnologias Utilizadas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 19**
+- **Vite** (Build tool)
+- **Tailwind CSS** (Estilização)
+- **Framer Motion** (Animações e Transições)
+- **Lucide React** (Ícones)
 
-## Expanding the ESLint configuration
+## 📖 Como usar e modificar
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Para aprender a alterar cores, textos, dados e efeitos manualmente, consulte o nosso:
+👉 **[GUIA_TECNICO.md](./GUIA_TECNICO.md)**
+
+## 🚀 Desenvolvimento
+
+```bash
+# Instalar dependências
+npm install
+
+# Iniciar servidor local
+npm run dev
+
+# Gerar build de produção
+npm run build
+```
+
+---
+*Desenvolvido para máxima imersão em campanhas de investigação.*

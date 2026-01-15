@@ -2,18 +2,26 @@ import React from 'react';
 import AnimatedNumber from '../core/AnimatedNumber';
 import { Shield, Crosshair } from '../icons';
 
-const CombatStats = ({ defesaBase, reflexoBase }) => {
+const CombatStats = ({ defesaBase, reflexoBase, darkMode }) => {
   return (
-    <div className="grid grid-cols-2 gap-px bg-zinc-800/20 border border-zinc-800/20 overflow-hidden">
-      <div className="p-6 text-center hover:bg-white/[0.02] transition-colors duration-300">
-        <Shield size={16} className="mx-auto mb-2 opacity-10" />
-        <p className="text-[9px] font-mono opacity-30 uppercase">Defesa</p>
-        <p className="text-4xl font-serif"><AnimatedNumber value={defesaBase} /></p>
+    <div className={`grid grid-cols-2 divide-x divide-zinc-800/20 border-y border-zinc-800/20 py-4 ${darkMode ? 'bg-white/[0.01]' : 'bg-black/[0.01]'}`}>
+      <div className="px-4 flex flex-col items-center">
+        <div className="flex items-center gap-2 mb-1">
+          <Shield size={12} className="opacity-40" />
+          <span className="text-[10px] font-mono opacity-40 uppercase tracking-tighter">Defense</span>
+        </div>
+        <div className="text-3xl font-serif font-bold tracking-tight">
+          <AnimatedNumber value={defesaBase} />
+        </div>
       </div>
-      <div className="p-6 text-center hover:bg-white/[0.02] transition-colors duration-300">
-        <Crosshair size={16} className="mx-auto mb-2 opacity-10" />
-        <p className="text-[9px] font-mono opacity-30 uppercase">Reflexo</p>
-        <p className="text-4xl font-serif"><AnimatedNumber value={reflexoBase} /></p>
+      <div className="px-4 flex flex-col items-center">
+        <div className="flex items-center gap-2 mb-1">
+          <Crosshair size={12} className="opacity-40" />
+          <span className="text-[10px] font-mono opacity-40 uppercase tracking-tighter">Reflex</span>
+        </div>
+        <div className="text-3xl font-serif font-bold tracking-tight">
+          <AnimatedNumber value={reflexoBase} />
+        </div>
       </div>
     </div>
   );
