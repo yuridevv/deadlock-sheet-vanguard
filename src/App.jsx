@@ -171,7 +171,7 @@ export default function VanguardDossierV7() {
           setVigorMax(json.status.vigorMax || 20);
           setFolego(json.status.folego || 12); setSanidade(json.status.sanidade || 12);
         }
-        setHabilidades(json.habilidades || [{ id: 1, nome: '', rank: '-' }]);
+        setHabilidades(json.habilidades || [{ id: 1, nome: '', rank: '-', descricao: '' }]);
         setInventario(json.inventario || [{ item: '', qtd: 1, dano: '' }]);
         
         // Import achievements

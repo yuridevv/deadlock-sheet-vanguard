@@ -30,7 +30,7 @@ export const useCharacterSheetState = () => {
     Fisico: 0, Destreza: 0, Vontade: 0, Intelecto: 0, Instinto: 0, Presenca: 0
   });
   const [inventario, setInventario] = useState(initial.inventario || [{ item: '', qtd: 1, dano: '', isWeapon: false }]);
-  const [habilidades, setHabilidades] = useState(initial.habilidades || [{ id: 1, nome: '', rank: '-' }]);
+  const [habilidades, setHabilidades] = useState(initial.habilidades || [{ id: 1, nome: '', rank: '-', descricao: '' }]);
   
   // Combine saved achievements with the base structure to allow for future additions
   const [achievements, setAchievements] = useState(() => {

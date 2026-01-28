@@ -32,35 +32,47 @@ const DossierTab = ({
       <div className="space-y-4">
         <div className="flex justify-between items-center opacity-30">
           <h3 className="text-[10px] font-black uppercase tracking-widest font-mono">Habilidades/Maestrias</h3>
-          <button onClick={() => setHabilidades([...habilidades, {id: Date.now(), nome: '', rank: ''}])} className="hover:text-white transition-colors"><Plus size={16}/></button>
+          <button onClick={() => setHabilidades([...habilidades, {id: Date.now(), nome: '', rank: '', descricao: ''}])} className="hover:text-white transition-colors"><Plus size={16}/></button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {habilidades.map((h, i) => (
-            <div key={h.id} className="flex items-center gap-4 p-4 border border-zinc-800/30 bg-white/[0.02] hover:border-zinc-500 transition-all duration-300 group">
-              <input 
-                value={h.nome} 
-                onChange={(e) => {
-                  const newH = [...habilidades];
-                  newH[i] = { ...newH[i], nome: e.target.value };
-                  setHabilidades(newH);
-                }} 
-                className="flex-1 bg-transparent text-xs font-bold outline-none border-b border-zinc-800/50 focus:border-zinc-400 py-1 transition-colors placeholder:text-zinc-600" 
-                placeholder="Nome da Habilidade" 
-              />
-              <div className="relative">
+            <div key={h.id} className="flex flex-col gap-2 p-4 border border-zinc-800/30 bg-white/[0.02] hover:border-zinc-500 transition-all duration-300 group">
+              <div className="flex items-center gap-4 w-full">
                 <input 
-                  value={h.rank} 
+                  value={h.nome} 
                   onChange={(e) => {
                     const newH = [...habilidades];
-                    newH[i] = { ...newH[i], rank: e.target.value };
+                    newH[i] = { ...newH[i], nome: e.target.value };
                     setHabilidades(newH);
                   }} 
-                  className="w-10 bg-zinc-900/50 border border-zinc-800 focus:border-zinc-500 text-center text-xs font-mono font-bold py-1 outline-none transition-all rounded-none placeholder:opacity-30" 
-                  placeholder="0"
+                  className="flex-1 bg-transparent text-xs font-bold outline-none border-b border-zinc-800/50 focus:border-zinc-400 py-1 transition-colors placeholder:text-zinc-600" 
+                  placeholder="Nome da Habilidade" 
                 />
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[7px] font-mono opacity-20 uppercase tracking-tighter">Maestria</div>
+                <div className="relative">
+                  <input 
+                    value={h.rank} 
+                    onChange={(e) => {
+                      const newH = [...habilidades];
+                      newH[i] = { ...newH[i], rank: e.target.value };
+                      setHabilidades(newH);
+                    }} 
+                    className="w-10 bg-zinc-900/50 border border-zinc-800 focus:border-zinc-500 text-center text-xs font-mono font-bold py-1 outline-none transition-all rounded-none placeholder:opacity-30" 
+                    placeholder="0"
+                  />
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-[7px] font-mono opacity-20 uppercase tracking-tighter">Maestria</div>
+                </div>
+                <button onClick={() => setHabilidades(habilidades.filter(hab => hab.id !== h.id))} className="opacity-0 group-hover:opacity-100 text-red-900 transition-opacity duration-300"><Trash2 size={14}/></button>
               </div>
-              <button onClick={() => setHabilidades(habilidades.filter(hab => hab.id !== h.id))} className="opacity-0 group-hover:opacity-100 text-red-900 transition-opacity duration-300"><Trash2 size={14}/></button>
+              <textarea
+                value={h.descricao || ''}
+                onChange={(e) => {
+                  const newH = [...habilidades];
+                  newH[i] = { ...newH[i], descricao: e.target.value };
+                  setHabilidades(newH);
+                }}
+                className="w-full bg-transparent text-[10px] font-mono opacity-70 outline-none resize-none border-b border-transparent focus:border-zinc-800 transition-colors placeholder:text-zinc-500 h-6 focus:h-20"
+                placeholder="Descrição da habilidade..."
+              />
             </div>
           ))}
         </div>
