@@ -22,7 +22,7 @@ export default function Header({
                         <span className="text-xs absolute -top-3 left-1 font-mono text-zinc-500 tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-opacity duration-500">VANGUARD</span>
                     </h1>
                     <div className="flex items-center gap-3 text-xs font-mono tracking-widest text-zinc-500">
-                        <span>OPERATIONAL_OS_V8.2</span>
+                        <span>OPERATIONAL_OS_V8.3</span>
                         <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
                     </div>
                 </div>
