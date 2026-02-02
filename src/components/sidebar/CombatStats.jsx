@@ -8,7 +8,7 @@ const CombatStats = ({ defesaBase, reflexoBase, darkMode }) => {
       <div className="px-4 flex flex-col items-center">
         <div className="flex items-center gap-2 mb-1">
           <Shield size={12} className="opacity-40" />
-          <span className="text-[10px] font-mono opacity-40 uppercase tracking-tighter">Defense</span>
+          <span className="text-[10px] font-mono opacity-40 uppercase tracking-tighter">Defesa</span>
         </div>
         <div className="text-3xl font-serif font-bold tracking-tight">
           <AnimatedNumber value={defesaBase} />
@@ -17,7 +17,7 @@ const CombatStats = ({ defesaBase, reflexoBase, darkMode }) => {
       <div className="px-4 flex flex-col items-center">
         <div className="flex items-center gap-2 mb-1">
           <Crosshair size={12} className="opacity-40" />
-          <span className="text-[10px] font-mono opacity-40 uppercase tracking-tighter">Reflex</span>
+          <span className="text-[10px] font-mono opacity-40 uppercase tracking-tighter">Reflexo</span>
         </div>
         <div className="text-3xl font-serif font-bold tracking-tight">
           <AnimatedNumber value={reflexoBase} />
