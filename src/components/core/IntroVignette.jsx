@@ -39,7 +39,7 @@ export default function IntroVignette({ onComplete }) {
             animate={{ opacity: 1, y: 0 }}
             className="flex justify-between items-end border-b border-zinc-800 pb-2 mb-8"
           >
-            <span className="text-xs tracking-[0.2em] text-zinc-600">DEADLOCK OS v8.1</span>
+            <span className="text-xs tracking-[0.2em] text-zinc-600">DEADLOCK OS v8.2</span>
             <div className="flex gap-1">
               <div className="w-2 h-2 bg-red-900/50 rounded-none animate-pulse" />
               <div className="w-2 h-2 bg-zinc-800 rounded-none" />
