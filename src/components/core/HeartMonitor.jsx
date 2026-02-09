@@ -12,9 +12,9 @@ const HeartMonitor = ({ vigor, vigorMax, sanidade, fadiga, isDead }) => {
     const isHighFatigue = fadiga >= 2;
 
     let level = 0; 
-    if (healthPerc < 0.3 || sanityPerc < 0.2 || fadiga >= 3) level = 3;
-    else if (healthPerc < 0.6 || sanityPerc < 0.5 || isHighFatigue) level = 2;
-    else if (healthPerc < 0.9 || sanityPerc < 0.8) level = 1;
+    if (healthPerc < 0.3 || sanityPerc <= 0.25 || fadiga >= 3) level = 3;
+    else if (healthPerc < 0.6 || sanityPerc <= 0.5 || isHighFatigue) level = 2;
+    else if (healthPerc < 0.9 || sanityPerc <= 0.75) level = 1;
 
     switch (level) {
       case 3: return { colorStr: '#ef4444', bpm: 160 + Math.random() * 10, statusLabel: 'CRITICAL' }; 

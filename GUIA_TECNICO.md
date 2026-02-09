@@ -27,8 +27,8 @@ A estilização é feita via classes do Tailwind diretamente nos componentes.
 *   **Bordas**: Padronizamos para `rounded-none`. Se desejar mudar, use `rounded-sm`, `rounded-md`, etc.
 *   **Estilos Globais**: Em `src/index.css` estão as regras que afetam o site todo, como o efeito CRT, Scanlines e a padronização global de bordas.
 
-### 3. Sistema de Insanidade (Sanidade 0)
-O bloco de notas reage quando a sanidade chega a zero.
+### 3. Sistema de Insanidade (Sanidade 3)
+O bloco de notas reage quando a sanidade chega a 3 ou menos.
 *   **Frases de Glitch**: No arquivo `src/components/notepad/Notepad.jsx`, localize a constante `CREEPY_PHRASES`. Você pode adicionar qualquer frase lá.
 *   **Efeito Visual**: A lógica de trocar o texto e deixar o bloco vermelho está dentro do componente `NoteListItem` no mesmo arquivo.
 

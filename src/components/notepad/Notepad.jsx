@@ -34,7 +34,7 @@ const useGlitchText = (originalText, sanidade) => {
     const [displayText, setDisplayText] = useState(originalText);
     useEffect(() => { setDisplayText(originalText); }, [originalText]);
     useEffect(() => {
-        if (sanidade > 0) { setDisplayText(originalText); return; }
+        if (sanidade > 3) { setDisplayText(originalText); return; }
         const interval = setInterval(() => {
             if (Math.random() > 0.6) { 
                 const phrase = CREEPY_PHRASES[Math.floor(Math.random() * CREEPY_PHRASES.length)];
@@ -63,13 +63,13 @@ const NoteListItem = ({ note, updateNoteContent, deleteNote, sanidade, darkMode 
 
     const handleInput = (e) => {
         updateNoteContent(note.id, e.target.value);
-        if (sanidade <= 0) {
+        if (sanidade <= 3) {
             setIsTypingGlitch(true);
             setTimeout(() => setIsTypingGlitch(false), 200); // Slightly longer for the new animation
         }
     };
 
-    const isInsanityActive = sanidade <= 0 && displayText !== note.content;
+    const isInsanityActive = sanidade <= 3 && displayText !== note.content;
 
     return (
         <motion.div 
@@ -84,7 +84,7 @@ const NoteListItem = ({ note, updateNoteContent, deleteNote, sanidade, darkMode 
                 <button onClick={() => deleteNote(note.id)} className="text-zinc-400 hover:text-red-500"><Trash2 size={12} /></button>
             </div>
             <div className="mb-2 flex items-center gap-2">
-                <div className={`w-1 h-1 ${sanidade <= 0 ? 'bg-red-500 animate-pulse' : 'bg-emerald-500/50'}`} />
+                <div className={`w-1 h-1 ${sanidade <= 3 ? 'bg-red-500 animate-pulse' : 'bg-emerald-500/50'}`} />
                 <span className="text-[10px] font-mono uppercase text-zinc-500">{note.id.split('-')[1]}</span>
             </div>
             
@@ -105,7 +105,7 @@ const NoteListItem = ({ note, updateNoteContent, deleteNote, sanidade, darkMode 
                 ) : (
                     <div 
                         className={`w-full text-sm font-mono leading-relaxed whitespace-pre-wrap break-words 
-                            ${isTypingGlitch || (sanidade <= 0 && displayText !== note.content) ? 'text-red-600 font-bold glitch-active-critical' : darkMode ? 'text-zinc-400' : 'text-zinc-700'}`}
+                            ${isTypingGlitch || (sanidade <= 3 && displayText !== note.content) ? 'text-red-600 font-bold glitch-active-critical' : darkMode ? 'text-zinc-400' : 'text-zinc-700'}`}
                         style={{ minHeight: '60px' }}
                     >
                         {renderHighlightedText(displayText) || <span className="opacity-20 italic">vazio</span>}

@@ -94,7 +94,8 @@ export default function VanguardDossierV7() {
 
   const penalidade = Number(fadiga);
   const isCritical = fadiga === 3;
-  const isInsane = sanidade <= 0;
+  const isInsane = sanidade <= 3;
+  const isUmbra = sanidade <= 6;
   const defesaBase = 6 + Number(attrs.Fisico);
   const reflexoBase = Math.max(Number(attrs.Destreza), Number(attrs.Instinto));
 
@@ -233,11 +234,20 @@ export default function VanguardDossierV7() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
         >
-          <div className={`min-h-screen transition-colors duration-500 p-4 md:p-8 font-sans overflow-x-hidden relative rounded-none selection:bg-red-900 selection:text-white
-            ${darkMode ? 'bg-[#050505] text-zinc-300' : 'bg-[#f4f1ea] text-zinc-800'}
+          <div className={`min-h-screen transition-colors duration-700 p-4 md:p-8 font-sans overflow-x-hidden relative rounded-none selection:bg-purple-900 selection:text-white
+            ${isUmbra ? 'bg-[#08020d] text-zinc-400' : darkMode ? 'bg-[#050505] text-zinc-300' : 'bg-[#f4f1ea] text-zinc-800'}
             ${isInsane && effectsEnabled ? 'animate-flicker-screen' : ''} 
+            ${isUmbra && effectsEnabled ? 'animate-umbra-glow' : ''}
           `}>
-            <Effects effectsEnabled={effectsEnabled} isCritical={isCritical} darkMode={darkMode} triggerVignette={triggerVignette} />
+            {isUmbra && effectsEnabled && <div className="fixed inset-0 pointer-events-none z-0 umbra-void-overlay"></div>}
+            <Effects 
+              effectsEnabled={effectsEnabled} 
+              isCritical={isCritical} 
+              isUmbra={isUmbra}
+              isInsane={isInsane}
+              darkMode={darkMode} 
+              triggerVignette={triggerVignette} 
+            />
             <DeathScreen isDead={isDead} setIsDead={setIsDead} />
             <AchievementNotification achievementName={notification} achievementData={notification ? achievements[notification] : null} />
 
@@ -252,6 +262,7 @@ export default function VanguardDossierV7() {
                 setIsDead={setIsDead}
                 isNotepadOpen={isNotepadOpen}
                 setIsNotepadOpen={setIsNotepadOpen}
+                isUmbra={isUmbra}
               />
               <input type="file" ref={fileInputRef} onChange={importarFicha} className="hidden" accept=".json" />
 
@@ -268,6 +279,7 @@ export default function VanguardDossierV7() {
                       nivel={nivel} setNivel={setNivel}
                       idade={idade} setIdade={setIdade}
                       arquetipo={arquetipo} setArquetipo={setArquetipo}
+                      isUmbra={isUmbra}
                     />
                   </div>
                   
@@ -365,6 +377,7 @@ export default function VanguardDossierV7() {
                       hoverBorderColor="hover:border-purple-900"
                       hoverTextColor="group-hover:text-purple-900/70"
                       isInsane={isInsane}
+                      isUmbra={isUmbra}
                       effectsEnabled={effectsEnabled}
                     />
                   </div>

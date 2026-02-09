@@ -17,6 +17,7 @@ const Profile = ({
   setIdade,
   arquetipo,
   setArquetipo,
+  isUmbra
 }) => {
   const fields = [
     { label: 'Persona', val: persona, set: setPersona },
@@ -28,7 +29,7 @@ const Profile = ({
 
   return (
     <section className="flex flex-col md:flex-row gap-10 items-start border-b border-zinc-800/10 pb-12 transition-colors duration-300 hover:border-zinc-800/30">
-      <div onClick={() => imageInputRef.current.click()} className="w-40 h-48 bg-zinc-900/20 border border-zinc-800/30 flex items-center justify-center relative grayscale cursor-pointer group overflow-hidden transition-all duration-300 hover:border-zinc-500 hover:shadow-[0_0_30px_rgba(0,0,0,0.3)] hover:grayscale-0">
+      <div onClick={() => imageInputRef.current.click()} className={`w-40 h-48 bg-zinc-900/20 border flex items-center justify-center relative grayscale cursor-pointer group overflow-hidden transition-all duration-300 hover:border-zinc-500 hover:shadow-[0_0_30px_rgba(0,0,0,0.3)] hover:grayscale-0 ${isUmbra ? 'border-purple-900/40 shadow-[0_0_15px_rgba(88,28,135,0.2)]' : 'border-zinc-800/30'}`}>
         {imagem ? (
           <img src={imagem} alt="Perfil" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 ease-out" />
         ) : (
@@ -38,7 +39,15 @@ const Profile = ({
       </div>
 
       <div className="flex-1 w-full space-y-6">
-        <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="NOME DO SUJEITO" className="w-full bg-transparent font-serif text-5xl md:text-6xl outline-none placeholder:opacity-5 transition-all duration-300 focus:placeholder:opacity-10" />
+        <div className="flex justify-between items-start">
+            <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="NOME DO SUJEITO" className={`w-full bg-transparent font-serif text-5xl md:text-6xl outline-none placeholder:opacity-5 transition-all duration-300 focus:placeholder:opacity-10 ${isUmbra ? 'text-purple-100' : ''}`} />
+            {isUmbra && (
+                <div className="flex flex-col items-end">
+                    <span className="text-[10px] font-black text-purple-600 tracking-[0.4em] uppercase animate-pulse">Despertado</span>
+                    <div className="h-0.5 w-12 bg-purple-900/50 mt-1"></div>
+                </div>
+            )}
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           {fields.map((field) => (
             <div key={field.label} className="group">

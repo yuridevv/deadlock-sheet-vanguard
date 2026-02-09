@@ -13,20 +13,24 @@ const StatusBar = ({
   hoverBorderColor,
   hoverTextColor,
   isInsane,
+  isUmbra,
   effectsEnabled
 }) => {
   const percentage = maxValue > 0 ? Math.min((value / maxValue) * 100, 100) : 0;
   
   const labelClasses = `text-[10px] font-black uppercase tracking-widest font-mono flex items-center gap-2 transition-colors ${
-    (isInsane && effectsEnabled) ? 'text-purple-500 animate-pulse' : hoverTextColor
+    (isInsane && effectsEnabled) ? 'text-purple-400 animate-pulse' : 
+    (isUmbra && effectsEnabled) ? 'text-purple-500' : hoverTextColor
   }`;
   
   const valueInputClasses = `w-12 bg-transparent text-2xl text-right outline-none font-serif hover:text-white transition-colors ${
-    (isInsane && effectsEnabled) ? 'text-purple-500' : ''
+    (isInsane && effectsEnabled) ? 'text-purple-400' : 
+    (isUmbra && effectsEnabled) ? 'text-purple-500' : ''
   }`;
   
   const barClasses = `h-full transition-all duration-500 ease-out ${
-    (isInsane && effectsEnabled) ? 'bg-purple-600' : barColor
+    (isInsane && effectsEnabled) ? 'bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]' : 
+    (isUmbra && effectsEnabled) ? 'bg-purple-800' : barColor
   }`;
 
   return (

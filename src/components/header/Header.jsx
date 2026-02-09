@@ -10,20 +10,21 @@ export default function Header({
     setDarkMode, 
     setIsDead,
     isNotepadOpen,
-    setIsNotepadOpen
+    setIsNotepadOpen,
+    isUmbra
 }) {
     return (
         <header className="mb-12 relative">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pt-10 px-2 relative z-10">
                 <div className="space-y-2">
                     <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase relative inline-block group cursor-default">
-                        <span className="relative z-10">DEADLOCK</span>
-                        <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-red-900 via-transparent to-transparent group-hover:via-red-800 transition-all duration-500"></span>
-                        <span className="text-xs absolute -top-3 left-1 font-mono text-zinc-500 tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-opacity duration-500">VANGUARD</span>
+                        <span className={`relative z-10 transition-colors duration-700 ${isUmbra ? 'text-purple-100' : ''}`}>DEADLOCK</span>
+                        <span className={`absolute -bottom-2 left-0 w-full h-1 transition-all duration-500 ${isUmbra ? 'bg-gradient-to-r from-purple-600 via-transparent to-transparent' : 'bg-gradient-to-r from-red-900 via-transparent to-transparent group-hover:via-red-800'}`}></span>
+                        <span className={`text-xs absolute -top-3 left-1 font-mono tracking-[0.3em] transition-all duration-500 ${isUmbra ? 'text-purple-400 opacity-100' : 'text-zinc-500 opacity-0 group-hover:opacity-100'}`}>VANGUARD</span>
                     </h1>
                     <div className="flex items-center gap-3 text-xs font-mono tracking-widest text-zinc-500">
-                        <span>OPERATIONAL_OS_V8.3</span>
-                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+                        <span className={isUmbra ? 'text-purple-900/40' : ''}>{isUmbra ? 'UMBRA_RESONANCE_V1' : 'OPERATIONAL_OS_V8.3'}</span>
+                        <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isUmbra ? 'bg-purple-600 shadow-[0_0_8px_rgba(147,51,234,0.6)]' : 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]'}`}></div>
                     </div>
                 </div>
 

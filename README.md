@@ -6,7 +6,7 @@ Uma ficha de personagem imersiva e tática desenvolvida para investigadores, com
 
 - **Vinheta de Boot**: Sequência de inicialização estilizada "Vanguard OS".
 - **Monitor Cardíaco (ECG)**: Visualização dinâmica de Vigor, Sanidade e Fadiga.
-- **Sistema de Insanidade**: Efeitos de glitch e alucinações textuais no bloco de notas quando a sanidade chega a 0.
+- **Sistema de Insanidade**: Efeitos de glitch e alucinações textuais no bloco de notas quando a sanidade chega a 3.
 - **Feedback de Fadiga**: Efeitos visuais de alarme e alertas de caveira em estados críticos.
 - **Notepad & Evidence Board**: Sistema de notas com marcações (#NPC, @Local, !Pista) e quadro de evidências.
 - **Conquistas**: Desbloqueio automático de conquistas baseado em rolagens de dados.

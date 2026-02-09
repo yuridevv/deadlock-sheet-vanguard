@@ -24,7 +24,7 @@ const useGlitchText = (originalText, sanidade) => {
     const [displayText, setDisplayText] = useState(originalText);
     useEffect(() => { setDisplayText(originalText); }, [originalText]);
     useEffect(() => {
-        if (sanidade > 0) { setDisplayText(originalText); return; }
+        if (sanidade > 3) { setDisplayText(originalText); return; }
         const interval = setInterval(() => {
             if (Math.random() > 0.7) { 
                 const phrase = CREEPY_PHRASES[Math.floor(Math.random() * CREEPY_PHRASES.length)];
@@ -113,7 +113,7 @@ const NoteCard = ({
                         value={note.content}
                         onChange={(e) => {
                             setNotes(prev => prev.map(n => n.id === note.id ? { ...n, content: e.target.value } : n));
-                            if (sanidade <= 0) { setIsTypingGlitch(true); setTimeout(() => setIsTypingGlitch(false), 100); }
+                            if (sanidade <= 3) { setIsTypingGlitch(true); setTimeout(() => setIsTypingGlitch(false), 100); }
                         }}
                         onBlur={() => setIsEditing(false)}
                         className={`w-full p-3 bg-transparent outline-none resize-none text-sm font-mono leading-relaxed transition-colors ${isTypingGlitch ? 'text-red-600' : 'text-zinc-300'}`}
@@ -122,7 +122,7 @@ const NoteCard = ({
                     />
                 ) : (
                     <div 
-                        className={`w-full p-3 text-sm font-mono leading-relaxed whitespace-pre-wrap break-words ${isTypingGlitch || (sanidade <= 0 && displayText !== note.content) ? 'text-red-600 font-bold' : 'text-zinc-400'}`}
+                        className={`w-full p-3 text-sm font-mono leading-relaxed whitespace-pre-wrap break-words ${isTypingGlitch || (sanidade <= 3 && displayText !== note.content) ? 'text-red-600 font-bold' : 'text-zinc-400'}`}
                         style={{ minHeight: '140px' }}
                     >
                         {renderHighlightedText(displayText) || <span className="opacity-20 italic">vazio</span>}
