@@ -20,7 +20,6 @@ import InventoryTab from './components/sheet/InventoryTab';
 import AchievementsTab from './components/sheet/AchievementsTab';
 import StatusBar from './components/sidebar/StatusBar';
 import FatigueStatus from './components/sidebar/FatigueStatus';
-import DiceRoller from './components/sidebar/DiceRoller';
 import CombatStats from './components/sidebar/CombatStats';
 import Notepad from './components/notepad/Notepad';
 
@@ -40,7 +39,7 @@ export default function VanguardDossierV7() {
   const {
     nome, persona, background, nivel, idade, arquetipo, bio, aparencia, lacos,
     imagem, vigor, vigorMax, folego, sanidade, fadiga, attrs, inventario, habilidades,
-    achievements, activeTab, darkMode, effectsEnabled, resultado, rollDetails, isDead, showContent,
+    achievements, activeTab, darkMode, effectsEnabled, isDead, showContent,
     notification, draggedItemIndex, notes, isNotepadOpen
   } = state;
 
@@ -48,49 +47,9 @@ export default function VanguardDossierV7() {
     setNome, setPersona, setBackground, setNivel, setIdade, setArquetipo, setBio, 
     setAparencia, setLacos, setImagem, setVigor, setVigorMax, setFolego, setSanidade,
     setFadiga, setAttrs, setInventario, setHabilidades, setAchievements, setActiveTab, setDarkMode,
-    setEffectsEnabled, setResultado, setRollDetails, setIsDead, setNotification,
+    setEffectsEnabled, setIsDead, setNotification,
     setDraggedItemIndex, setNotes, setIsNotepadOpen
   } = state;
-
-  // --- Achievement Unlocking Logic ---
-  useEffect(() => {
-    if (resultado === null) return;
-  
-    let unlockedAchievementName = null;
-  
-    // Find the first achievement that can be unlocked
-    for (const [name, ach] of Object.entries(achievements)) {
-      if (!ach.unlocked && ach.trigger === 'roll') {
-        let conditionMet = false;
-        if (ach.condition.gte !== undefined && resultado >= ach.condition.gte) {
-          conditionMet = true;
-        }
-        if (ach.condition.lte !== undefined && resultado <= ach.condition.lte) {
-          if (ach.condition.attr) {
-            if (rollDetails.source === ach.condition.attr) {
-              conditionMet = true;
-            }
-          } else {
-            conditionMet = true;
-          }
-        }
-        
-        if (conditionMet) {
-          unlockedAchievementName = name;
-          break; // Stop after finding one to show one notification at a time
-        }
-      }
-    }
-  
-    if (unlockedAchievementName) {
-      setAchievements(prev => ({
-        ...prev,
-        [unlockedAchievementName]: { ...prev[unlockedAchievementName], unlocked: true }
-      }));
-      setNotification(unlockedAchievementName);
-    }
-  }, [resultado, rollDetails, achievements, setAchievements, setNotification]);
-
 
   const penalidade = Number(fadiga);
   const isCritical = fadiga === 3;
@@ -121,18 +80,6 @@ export default function VanguardDossierV7() {
     if (!isNaN(num)) setter(num);
   };
   
-  const rolarAtributo = (attrName, valorAtributo) => {
-    const dado = Math.floor(Math.random() * 12) + 1;
-    const mod = Number(valorAtributo) - penalidade;
-    setResultado(dado + mod);
-    setRollDetails({ source: attrName, mod: mod });
-  };
-
-  const rolarDado = () => {
-    setResultado(Math.floor(Math.random() * 12) + 1);
-    setRollDetails({ source: 'D12 Puro', mod: 0 });
-  };
-
   const exportarFicha = () => {
     const dados = {
       version: "7.8_STABLE",
@@ -308,7 +255,7 @@ export default function VanguardDossierV7() {
                         exit={{ opacity: 0, x: 10 }}
                         transition={{ duration: 0.2 }}
                       >
-                        {activeTab === 'dossie' && <DossierTab attrs={attrs} setAttrs={setAttrs} penalidade={penalidade} rolarAtributo={rolarAtributo} habilidades={habilidades} setHabilidades={setHabilidades} />}
+                        {activeTab === 'dossie' && <DossierTab attrs={attrs} setAttrs={setAttrs} penalidade={penalidade} habilidades={habilidades} setHabilidades={setHabilidades} />}
                         {activeTab === 'biografia' && <BiographyTab bio={bio} setBio={setBio} aparencia={aparencia} setAparencia={setAparencia} lacos={lacos} setLacos={setLacos} />}
                         {activeTab === 'inventario' && <InventoryTab inventario={inventario} setInventario={setInventario} draggedItemIndex={draggedItemIndex} handleDragStart={handleDragStart} handleDragOver={handleDragOver} handleDragEnd={handleDragEnd} />}
                         {activeTab === 'conquistas' && <AchievementsTab achievements={achievements} setAchievements={setAchievements} />}
@@ -384,9 +331,6 @@ export default function VanguardDossierV7() {
 
                   <FatigueStatus fadiga={fadiga} setFadiga={setFadiga} isCritical={isCritical} effectsEnabled={effectsEnabled} onFadigaClick={handleFadigaClick} />
 
-                  <div className={`transition-all duration-500 border border-transparent p-4 -m-4 rounded-none ${sectionCriticalStyles}`}>
-                    <DiceRoller resultado={resultado} rollDetails={rollDetails} onRoll={rolarDado} />
-                  </div>
                 </aside>
               </div>
             </div>

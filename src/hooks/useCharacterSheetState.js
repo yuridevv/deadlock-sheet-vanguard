@@ -49,8 +49,6 @@ export const useCharacterSheetState = () => {
   const [activeTab, setActiveTab] = useState('dossie');
   const [darkMode, setDarkMode] = useState(initial.darkMode ?? true);
   const [effectsEnabled, setEffectsEnabled] = useState(initial.effectsEnabled ?? true);
-  const [resultado, setResultado] = useState(null);
-  const [rollDetails, setRollDetails] = useState({ source: 'D12', mod: 0 });
   const [isDead, setIsDead] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [notification, setNotification] = useState(null); // For achievement notifications
@@ -98,7 +96,7 @@ export const useCharacterSheetState = () => {
   const state = {
     nome, persona, background, nivel, idade, arquetipo, bio, aparencia, lacos,
     imagem, vigor, vigorMax, folego, sanidade, fadiga, attrs, inventario, habilidades,
-    achievements, activeTab, darkMode, effectsEnabled, resultado, rollDetails, isDead, showContent,
+    achievements, activeTab, darkMode, effectsEnabled, isDead, showContent,
     notification, draggedItemIndex, notes, isNotepadOpen,
   };
 
@@ -106,7 +104,7 @@ export const useCharacterSheetState = () => {
     setNome, setPersona, setBackground, setNivel, setIdade, setArquetipo, setBio, 
     setAparencia, setLacos, setImagem, setVigor, setVigorMax, setFolego, setSanidade,
     setFadiga, setAttrs, setInventario, setHabilidades, setAchievements, setActiveTab, setDarkMode,
-    setEffectsEnabled, setResultado, setRollDetails, setIsDead, setShowContent,
+    setEffectsEnabled, setIsDead, setShowContent,
     setNotification, setDraggedItemIndex, setNotes, setIsNotepadOpen,
   };
 
