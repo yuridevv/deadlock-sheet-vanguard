@@ -1,10 +1,11 @@
 import React from 'react';
-import { Plus, Trash2 } from '../icons';
+import { Dice5, Plus, Trash2 } from '../icons';
 
 const DossierTab = ({
   attrs,
   setAttrs,
   penalidade,
+  rolarAtributo,
   habilidades,
   setHabilidades,
 }) => {
@@ -19,6 +20,7 @@ const DossierTab = ({
                 <span className="text-[14px] font-mono font-bold text-zinc-500">Total: {Number(attrs[attr]) - penalidade}</span>
               </div>
               <div className="flex gap-2">
+                 <button onClick={() => rolarAtributo(attr, attrs[attr])} className="p-1 text-zinc-600 hover:text-white transition-colors"><Dice5 size={14}/></button>
                  {penalidade > 0 && <span className="text-[10px] font-black text-red-900 animate-pulse">-{penalidade}</span>}
               </div>
             </div>
